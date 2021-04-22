@@ -4,7 +4,7 @@
 
 * [Simple feign](#simple-feign)
 * [Feign with Ribbon](#feign-with-ribbon)
-* [Feign with eureka naming server](#feign-with-eureka-naming-server)
+* [Feign with Eureka naming server](#feign-with-eureka-naming-server)
 
 ## Simple feign
 
@@ -96,7 +96,7 @@ subway-service.ribbon.listOfServers=http://localhost:8080,http://localhost:8085
 
 Все! Получилось еще лучше!!
 
-## Feign with eureka naming server
+## Feign with Eureka naming server
 
 Но.. что будет, если мы захотим увеличить количество экзепляров? Придется каждый раз 
 вручную добавлять новые пути? Нет - есть решение!
