@@ -96,7 +96,7 @@ subway-service.ribbon.listOfServers=http://localhost:8080,http://localhost:8085
 
 Все! Получилось еще лучше!!
 
-#### Feign with eureka naming server
+## Feign with eureka naming server
 
 Но.. что будет, если мы захотим увеличить количество экзепляров? Придется каждый раз 
 вручную добавлять новые пути? Нет - есть решение!
