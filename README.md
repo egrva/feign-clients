@@ -5,6 +5,7 @@
 * [Simple feign](#simple-feign)
 * [Feign with Ribbon](#feign-with-ribbon)
 * [Feign with Eureka naming server](#feign-with-eureka-naming-server)
+* [Questions and answers](#questions-and-answers)
 
 ## Simple feign
 
@@ -205,6 +206,11 @@ eureka.client.service-url.default-zone=http://localhost:8761/eureka
 урааааа
 
 🎉🎉🎉🎉🎉🎉🎉🎉
+## Questions and answers
+1. Как выглядит аннотация для создания feign клиента?
+2. Для чего нужен Ribbon
+3. Как создать feign клиента используя Eureka naming server 
+
 ## Used technologies
 
 * [Spring Cloud OpenFeign](https://cloud.spring.io/spring-cloud-openfeign/reference/html/) 
