@@ -1,6 +1,6 @@
 # Feign clients
 
-В этом примере мы рассмотрим работу с технологией feign.
+In this example we will look at working with feign technology.
 
 * [Simple feign](#simple-feign)
 * [Feign with Ribbon](#feign-with-ribbon)
@@ -9,20 +9,20 @@
 
 ## Simple feign
 
-Для примера будет использоваться базовый сервис: *Subway-service*.
-Он обрабатывает один запрос - показывает список станций метрополитена.
+For example, the basic service will be used: *Subway-service*.
+It processes one request - it shows a list of metro stations.
 
-*Feign* использует интерфейсы аннотированные @FeignClient чтобы генерировать API запросы и мапить ответ на Java классы.
-Он шлет http запросы другим сервисам.
+*Feign* uses interfaces annotated with @FeignClient to generate API requests and map responses to Java classes.
+It sends http requests to other services.
 
-Вам нужно только описать, как получить доступ к удаленной службе API, 
-указав такие детали, как URL, тело запроса и ответа, принятые заголовки и т. д. 
-Клиент Feign позаботится о деталях реализации.
+You only need to describe how to access the remote API service,
+specifying details such as URL, request and response body, accepted headers, etc.
+The Feign client will take care of the implementation details.
 
-Создадим другой сервис, который будет запрашивать список станций метрополитена.
+Let's create another service that will request a list of metro stations.
 *Subway-info-base-feignclient*
 
-Добавим нужные зависимости в *pom.xml*
+Add the necessary dependencies to *pom.xml*
 ```xml
 <dependency>
 	<groupId>org.springframework.cloud</groupId>
@@ -31,7 +31,7 @@
 </dependency>
 ```
 
-Теперь создадим feign-client
+Now let's create feign-client
 
 ```java
 @FeignClient(value="subway-service", url="http://localhost:8080")
@@ -41,9 +41,9 @@ public interface SubwayFeignService {
     SubwayStationDto getAllStations();
 }
 ```
-сигнатура метода должна быть такой же, как и у метода контроллера, к которому мы обращаемся.
+The method signature must be the same as that of the controller method we are accessing.
 
-Также необходимо добавить аннотацию в main класс.
+You also need to add an annotation to the main class.
 
 ```java
 @SpringBootApplication
@@ -57,17 +57,14 @@ public class SubwayInfoBaseFeignclientApplication {
 }
 ```
 
-Все! Круто!
+This is all! Cool!
 
 ## Feign with Ribbon
-Предыдущий пример очень крутой, но мы явно указали url запроса. А что, 
-если у нас будет несколько экземпляров, которые смогут говорить нам о существующих 
-станциях метро?
+The previous example is very cool, but we explicitly specified the request url. What if we had multiple instances that could tell us about existing subway stations?
 
-Для этого воспользуемся Ribbon - он поможет распределить нагрузку среди нескольких
-инстансов приложения.
+To do this, we will use Ribbon - it will help distribute the load among several application instances.
 
-Добавляем зависимость в pom.xml
+Add the necessary dependencies to *pom.xml*
 ```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -76,7 +73,7 @@ public class SubwayInfoBaseFeignclientApplication {
 </dependency>
 ```
 
-Добавляем аннотацию для работы с Ribbon нашему feign-client'у
+Adding an annotation for working with Ribbon to our feign-client
 
 ```java
 @FeignClient(value="subway-service")
@@ -88,27 +85,27 @@ public interface SubwayFeignService {
 }
 ```
 
-Также необходимо передать Ribbon urls на которых запущены экземпляры сервиса,
-который подскажет нам станции метро 
+It is also necessary to pass the Ribbon urls on which the service instances are running,
+who will tell us metro stations
 ```properties
 subway-service.ribbon.eureka.enabled=false
 subway-service.ribbon.listOfServers=http://localhost:8080,http://localhost:8085
 ```
 
-Все! Получилось еще лучше!!
+All! It turned out even better!!
 
 ## Feign with Eureka naming server
 
-Но.. что будет, если мы захотим увеличить количество экзепляров? Придется каждый раз 
-вручную добавлять новые пути? Нет - есть решение!
-Воспользуемся Eureka naming service. Укажем нашему сервису адрес eureka и теперь, каждый
-раз, когда будет создаваться новый экземпляр, он будет регистрироваться в eureka и говорить
-ей свой адрес, а с помощью Ribbon мы сможем ходить на какой-то из экзепляров, при этом даже 
-не зная конкретных адресов! 
+But.. what happens if we want to increase the number of copies? I'll have to every time
+manually add new paths? No - there is a solution!
+Let's use Eureka naming service. We indicate to our service the eureka address and now, everyone
+times when a new instance is created it will register with eureka and say
+her address, and with the help of Ribbon we will be able to go to one of the copies, and even
+without knowing specific addresses!
 
-Создадим сервис для Eureka *eureka-naming-service*
+Let's create a service for Eureka *eureka-naming-service*
 
- Добавим зависимость для Eureka
+Let's add a dependency for Eureka
 ```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -116,7 +113,7 @@ subway-service.ribbon.listOfServers=http://localhost:8080,http://localhost:8085
 </dependency>
 ```
 
-Создадим main класс
+Let's create the main class
 
 ```java
 @EnableEurekaServer
@@ -130,7 +127,7 @@ public class EurekaNamingServiceApplication {
 }
 ```
 
-И скажем на каком адресе у нас будет Eureka server
+And let’s say at what address we will have the Eureka server
 ```properties
 spring.application.name=netflix-eureka-naming-server
 server.port=8761
@@ -139,10 +136,9 @@ eureka.client.register-with-eureka=false
 eureka.client.fetch-registry=false
 ```
 
-Скажем сервису, который знает станции метро, что существует Eureka и что ему надо 
-там зарегистрироваться.
+Let's tell the service that knows metro stations that Eureka exists and that it needs to register there.
 
-Для этого добавим зависимость
+To do this, add a dependency
 
 ```xml
 <dependency>
@@ -152,7 +148,7 @@ eureka.client.fetch-registry=false
 </dependency>
 ```
 
-добавим аннотцию в main класс
+add an annotation to the main class
 
 ```java
 @EnableDiscoveryClient
@@ -166,13 +162,13 @@ public class SubwayServiceApplication {
 }
 ```
 
-и передадим ему адрес Eureka server
+and give him the Eureka server address
 
 ```properties
 eureka.client.service-url.default-zone=http://localhost:8761/eureka
 ```
 
-Для feign client'а также добавим зависимость
+For feign client we will also add a dependency
 ```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -180,7 +176,7 @@ eureka.client.service-url.default-zone=http://localhost:8761/eureka
     <version>2.1.2.RELEASE</version>
 </dependency>
 ```
-добавим аннотцию в main класс
+add an annotation to the main class
 
 ```java
 @SpringBootApplication
@@ -194,22 +190,21 @@ public class SubwayInfoServiceApplication {
 }
 ```
 
-и скажем ему, где находится Eureka server
+and tell him where the Eureka server is
 
 ```properties
 eureka.client.service-url.default-zone=http://localhost:8761/eureka
 ```
 
-Все. Теперь можно создать бесконечное число экземпляров сервиса, который содержит инфу 
-о станциях метрополитена, а feign-client даже ничего об этом не узнает
+All. Now you can create an infinite number of instances of a service that contains information about metro stations, and feign-client won’t even know anything about it
 
-урааааа
+yaaaaaay!
 
 🎉🎉🎉🎉🎉🎉🎉🎉
 ## Questions and answers
-1. Как выглядит аннотация для создания feign клиента?
-2. Для чего нужен Ribbon
-3. Как создать feign клиента используя Eureka naming server 
+1. What does the annotation for creating a feign client look like?
+2. What is Ribbon for?
+3. How to create a feign client using Eureka naming server
 
 ## Used technologies
 
